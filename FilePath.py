@@ -8,15 +8,13 @@ def get_dir(filename):
     file_index = check_path(filename)
     if file_index != -1:
         return filename[0: file_index + 1]
-    else:  
-        return ""
+    return ""
 
 def get_filename(filename):
     file_index = check_path(filename)
     if file_index != -1:
         return filename[file_index + 1:]
-    else:
-        return filename
+    return filename
 
 
 def get_file_type(filename):
