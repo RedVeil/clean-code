@@ -1,56 +1,41 @@
-import re
-import random
-
-# log/cups/
-def get_path_part(sFilename):
-    if len(sFilename) > 0 and sFilename[len(sFilename) - 1] == '/':
-        return sFilename
-
+def check_path(filename):
     try:
-        #integer is index where the last slash is found
-        integer = int(sFilename.rindex('/'))
-    except:
-        integer = -1
+        return filename.rindex('/')
+    except ValueError:
+        return -1
 
-    dirName = ''
-    if integer >= 0:
-        dirName = sFilename[0: integer + 1]
+def get_dir(filename):
+    file_index = check_path(filename)
+    if file_index != -1:
+        return filename[0: file_index + 1]
+    else:  
+        return ""
+
+def get_filename(filename):
+    file_index = check_path(filename)
+    if file_index != -1:
+        return filename[file_index + 1:]
     else:
-        dirName = ''
+        return filename
 
-    return dirName
 
-# access_log
-def getFilenamePart(sFilename):
+def get_file_type(filename):
     try:
-        int(sFilename.rindex('/'))
+        return filename[filename.rindex(".") + 1:]
     except:
-        return sFilename
+        return ''
 
-    pos = sFilename.rindex('/')
-    base_name = sFilename[pos + 1:]
-    return base_name
+    
 
 
-#.png
-def getEndOfFile(sFilename):
-    try:
-        occurrences = [m.start() for m in re.finditer('\.', sFilename)]
-        return sFilename[occurrences[-1] + 1:]
-    except:
-        pass
-
-    return ''
-
-
-assert(get_path_part("log/cups/access_log") == "log/cups/")
-assert(get_path_part("log/cups/") == "log/cups/")
-assert(get_path_part("cups/access_log") == "cups/")
-assert(get_path_part("access_log") == "")
-assert(getFilenamePart("log/cups/access_log") == "access_log")
-assert(getFilenamePart("log/cups/") == "")
-assert(getFilenamePart("cups/access_log") == "access_log")
-assert(getFilenamePart("access_log") == "access_log")
-assert(getEndOfFile("log/cups/access_log") == "")
-assert(getEndOfFile("base/FileHelper.cpp") == "cpp")
-assert(getEndOfFile("base/FileHelper.cpp.bak") == "bak")
+assert(get_dir("log/cups/access_log") == "log/cups/")
+assert(get_dir("log/cups/") == "log/cups/")
+assert(get_dir("cups/access_log") == "cups/")
+assert(get_dir("access_log") == "")
+assert(get_filename("log/cups/access_log") == "access_log")
+assert(get_filename("log/cups/") == "")
+assert(get_filename("cups/access_log") == "access_log")
+assert(get_filename("access_log") == "access_log")
+assert(get_file_type("log/cups/access_log") == "")
+assert(get_file_type("base/FileHelper.cpp") == "cpp")
+assert(get_file_type("base/FileHelper.cpp.bak") == "bak")
